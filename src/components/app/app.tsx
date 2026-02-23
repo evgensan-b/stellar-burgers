@@ -1,4 +1,8 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
+import { useAppDispatch } from '../../services/hooks';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
 
 import {
   ConstructorPage,
@@ -19,9 +23,14 @@ import '../../index.css';
 import styles from './app.module.css';
 
 const App = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
@@ -81,8 +90,6 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route
           path='/profile/orders/:number'
           element={
@@ -91,6 +98,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
       {background && (
