@@ -7,8 +7,12 @@ import {
 } from 'react-redux';
 
 import ingredientsReducer from './slices/ingredientsSlice';
+import constructorReducer from './slices/constructorSlice';
 
-const rootReducer = { ingredients: ingredientsReducer };
+const rootReducer = {
+  ingredients: ingredientsReducer,
+  constructor: constructorReducer
+};
 
 const store = configureStore({
   reducer: rootReducer,
