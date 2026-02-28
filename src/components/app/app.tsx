@@ -2,7 +2,6 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { useAppDispatch } from '../../services/hooks';
-import { getIngredients } from '../../services/slices/ingredientsSlice';
 
 import {
   ConstructorPage,
@@ -27,10 +26,6 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
