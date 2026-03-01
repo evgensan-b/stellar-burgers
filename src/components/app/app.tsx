@@ -7,6 +7,7 @@ import {
   authCheck,
   isAuthCheckedSelector
 } from '../../services/slices/userSlice';
+import { getIngredients } from '../../services/slices/ingredientsSlice';
 
 import {
   ConstructorPage,
@@ -41,6 +42,10 @@ const App = () => {
       dispatch(authCheck());
     };
     initAuth();
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getIngredients());
   }, [dispatch]);
 
   const handleModalClose = () => {
