@@ -24,7 +24,7 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useSelector(orderModalDataSelector);
 
   const constructorItems = {
-    bun: bun || { price: 0 },
+    bun: bun,
     ingredients: ingredients
   };
 
