@@ -1,24 +1,53 @@
 import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useSelector, useDispatch } from '../../services/store';
+import {
+  bunSelector,
+  ingredientsSelector
+} from '../../services/slices/constructorSlice';
+import {
+  orderBurger,
+  orderRequestSelector,
+  orderModalDataSelector,
+  closeOrderModal
+} from '../../services/slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const bun = useSelector(bunSelector);
+  const ingredients = useSelector(ingredientsSelector);
+  const orderRequest = useSelector(orderRequestSelector);
+  const orderModalData = useSelector(orderModalDataSelector);
+
   const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
+    bun: bun || { price: 0 },
+    ingredients: ingredients
   };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!bun || orderRequest) return;
+
+    const isAuth = localStorage.getItem('refreshToken');
+    if (!isAuth) {
+      navigate('/login');
+      return;
+    }
+
+    const ingredientsIds = [
+      bun._id,
+      ...ingredients.map((item) => item._id),
+      bun._id
+    ];
+    dispatch(orderBurger(ingredientsIds));
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModalHandler = () => {
+    dispatch(closeOrderModal());
+  };
 
   const price = useMemo(
     () =>
@@ -30,8 +59,6 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
-
   return (
     <BurgerConstructorUI
       price={price}
@@ -39,7 +66,7 @@ export const BurgerConstructor: FC = () => {
       constructorItems={constructorItems}
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
-      closeOrderModal={closeOrderModal}
+      closeOrderModal={closeOrderModalHandler}
     />
   );
 };

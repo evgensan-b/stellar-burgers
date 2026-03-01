@@ -1,7 +1,12 @@
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../services/hooks';
+import { useAppDispatch, useAppSelector } from '../../services/hooks';
+import {
+  getUser,
+  authCheck,
+  isAuthCheckedSelector
+} from '../../services/slices/userSlice';
 
 import {
   ConstructorPage,
@@ -26,10 +31,25 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
+  const isAuthChecked = useAppSelector(isAuthCheckedSelector);
+
+  useEffect(() => {
+    const initAuth = async () => {
+      if (localStorage.getItem('refreshToken')) {
+        await dispatch(getUser());
+      }
+      dispatch(authCheck());
+    };
+    initAuth();
+  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
   };
+
+  if (!isAuthChecked) {
+    return null;
+  }
 
   return (
     <div className={styles.app}>
