@@ -87,6 +87,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
         children='Оформить заказ'
         onClick={onOrderClick}
         disabled={orderRequest || !constructorItems.bun}
+        data-cy='order-button'
       />
       {error && (
         <p className={commonStyles.error}>

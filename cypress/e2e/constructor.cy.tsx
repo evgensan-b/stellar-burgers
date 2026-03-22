@@ -48,7 +48,7 @@ describe('Burger Constructor', () => {
   it('Открытие и закрытие модального окна ингредиента по клику на крестик', () => {
     cy.contains('Краторная булка N-200i').click();
   
-    cy.contains('Детали ингредиента').should('be.visible');
+    cy.get('[data-cy=modal]').should('be.visible');
     cy.contains('Краторная булка N-200i').should('be.visible');
   
     cy.contains('Калории, ккал').should('be.visible');
@@ -56,32 +56,35 @@ describe('Burger Constructor', () => {
     cy.contains('Жиры, г').should('be.visible');
     cy.contains('Углеводы, г').should('be.visible');
   
-    cy.get('button.Z7mUFPBZScxutAKTLKHN').click();
-    cy.contains('Детали ингредиента').should('not.exist');
+    cy.get('[data-cy=modal-close]').click();
+    cy.get('[data-cy=modal]').should('not.exist');
   });
 
   it('Открытие и закрытие модального окна по клику на оверлей', () => {
     cy.contains('Краторная булка N-200i').click();
-    cy.contains('Детали ингредиента').should('be.visible');
+    cy.get('[data-cy=modal]').should('be.visible');
   
-    cy.get('body').click(0, 0);
-    cy.contains('Детали ингредиента').should('not.exist');
+    cy.get('[data-cy=modal-overlay]').click({ force: true });
+    cy.get('[data-cy=modal]').should('not.exist');
   });
 
   it('Создание заказа авторизованным пользователем', () => {  
     cy.contains('Краторная булка N-200i').parent().contains('Добавить').click();
     cy.contains('Биокотлета из марсианской Магнолии').parent().contains('Добавить').click();
     
-    cy.contains('Оформить заказ').click();
+    cy.get('[data-cy=order-button]').first().click();
     
     cy.wait('@createOrder');
     
-    cy.contains('12345').should('be.visible');
+    cy.get('[data-cy=order-number]').contains('12345').should('be.visible');
     cy.contains('идентификатор заказа').should('be.visible');
+    cy.contains('Ваш заказ начали готовить').should('be.visible');
+    cy.contains('Дождитесь готовности на орбитальной станции').should('be.visible');
     
-    cy.get('button.Z7mUFPBZScxutAKTLKHN').click();
+    cy.get('[data-cy=modal-close]').click();
     
     cy.contains('Выберите булки').should('be.visible');
     cy.contains('Выберите начинку').should('be.visible');
+    cy.get('[data-cy=ingredientItem]').should('have.length', 0);
   });
 });
