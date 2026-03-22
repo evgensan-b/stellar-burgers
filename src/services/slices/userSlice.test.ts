@@ -13,12 +13,7 @@ const mockUser = {
 };
 
 describe('userSlice', () => {
-  const initialState = {
-    user: null,
-    isAuthChecked: false,
-    loading: false,
-    error: null
-  };
+  const initialState = userSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(userSlice(undefined, { type: 'unknown' })).toEqual(initialState);

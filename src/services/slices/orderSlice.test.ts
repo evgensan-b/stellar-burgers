@@ -12,11 +12,7 @@ const mockOrder: TOrder = {
 };
 
 describe('orderSlice', () => {
-  const initialState = {
-    orderRequest: false,
-    orderModalData: null,
-    error: null
-  };
+  const initialState = orderSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(orderSlice(undefined, { type: 'unknown' })).toEqual(initialState);

@@ -47,25 +47,27 @@ describe('Burger Constructor', () => {
 
   it('Открытие и закрытие модального окна ингредиента по клику на крестик', () => {
     cy.contains('Краторная булка N-200i').click();
+    cy.get('[data-cy=modal]').as('modal');
   
-    cy.get('[data-cy=modal]').should('be.visible');
-    cy.contains('Краторная булка N-200i').should('be.visible');
+    cy.get('@modal').contains('Краторная булка N-200i').should('be.visible');
   
-    cy.contains('Калории, ккал').should('be.visible');
-    cy.contains('Белки, г').should('be.visible');
-    cy.contains('Жиры, г').should('be.visible');
-    cy.contains('Углеводы, г').should('be.visible');
+    cy.get('@modal').contains('Калории, ккал').should('be.visible');
+    cy.get('@modal').contains('Белки, г').should('be.visible');
+    cy.get('@modal').contains('Жиры, г').should('be.visible');
+    cy.get('@modal').contains('Углеводы, г').should('be.visible');
   
     cy.get('[data-cy=modal-close]').click();
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get('@modal').should('not.exist');
   });
 
   it('Открытие и закрытие модального окна по клику на оверлей', () => {
     cy.contains('Краторная булка N-200i').click();
-    cy.get('[data-cy=modal]').should('be.visible');
+    cy.get('[data-cy=modal]').as('modal');
+
+    cy.get('@modal').contains('Краторная булка N-200i').should('be.visible');
   
     cy.get('[data-cy=modal-overlay]').click({ force: true });
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get('@modal').should('not.exist');
   });
 
   it('Создание заказа авторизованным пользователем', () => {  
@@ -73,15 +75,16 @@ describe('Burger Constructor', () => {
     cy.contains('Биокотлета из марсианской Магнолии').parent().contains('Добавить').click();
     
     cy.get('[data-cy=order-button]').first().click();
-    
     cy.wait('@createOrder');
     
-    cy.get('[data-cy=order-number]').contains('12345').should('be.visible');
-    cy.contains('идентификатор заказа').should('be.visible');
-    cy.contains('Ваш заказ начали готовить').should('be.visible');
-    cy.contains('Дождитесь готовности на орбитальной станции').should('be.visible');
+    cy.get('[data-cy=modal]').as('modal');
+    cy.get('@modal').contains('12345').should('be.visible');
+    cy.get('@modal').contains('идентификатор заказа').should('be.visible');
+    cy.get('@modal').contains('Ваш заказ начали готовить').should('be.visible');
+    cy.get('@modal').contains('Дождитесь готовности на орбитальной станции').should('be.visible');
     
     cy.get('[data-cy=modal-close]').click();
+    cy.get('@modal').should('not.exist');
     
     cy.contains('Выберите булки').should('be.visible');
     cy.contains('Выберите начинку').should('be.visible');

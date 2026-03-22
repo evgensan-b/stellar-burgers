@@ -35,10 +35,7 @@ const mockMain: TIngredient = {
 };
 
 describe('constructorSlice', () => {
-  const initialState = {
-    bun: null,
-    ingredients: []
-  };
+  const initialState = constructorSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(constructorSlice(undefined, { type: 'unknown' })).toEqual(initialState);

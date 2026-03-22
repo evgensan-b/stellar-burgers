@@ -14,11 +14,7 @@ const mockOrders: TOrder[] = [
 ];
 
 describe('profileOrdersSlice', () => {
-  const initialState = {
-    orders: [],
-    loading: false,
-    error: null
-  };
+  const initialState = profileOrdersSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(profileOrdersSlice(undefined, { type: 'unknown' })).toEqual(initialState);

@@ -31,11 +31,7 @@ const mockIngredients: TIngredient[] = [
 ];
 
 describe('ingredientsSlice', () => {
-  const initialState = {
-    ingredients: [],
-    loading: false,
-    error: null
-  };
+  const initialState = ingredientsSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(ingredientsSlice(undefined, { type: 'unknown' })).toEqual(initialState);

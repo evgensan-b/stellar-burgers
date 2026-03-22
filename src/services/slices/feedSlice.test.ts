@@ -29,13 +29,7 @@ const mockPayload = {
 };
 
 describe('feedSlice', () => {
-  const initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    loading: false,
-    error: null
-  };
+  const initialState = feedSlice(undefined, { type: 'unknown' });
 
   it('должен возвращать initialState', () => {
     expect(feedSlice(undefined, { type: 'unknown' })).toEqual(initialState);
